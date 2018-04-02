@@ -589,15 +589,15 @@ match()如果匹配成功，返回一个Match对象，否则返回None：
 
 用正则表达式切分字符串比用固定的字符更灵活:
 
-    >>> re.split(r'\s+', 'a b   c')
+    >>>re.split(r'\s+', 'a b   c')
     ['a', 'b', 'c']
 
 - 分组
 提取子串，用`()`表示的就是要提取的分组（Group）；
 例如：^(\d{3})-(\d{3,8})$分别定义了两个组
 
-    >>> m = re.match(r'^(\d{3})-(\d{3,8})$', '010-12345')
-    >>> m
+    >>>m = re.match(r'^(\d{3})-(\d{3,8})$', '010-12345')
+    >>>m
     <_sre.SRE_Match object; span=(0, 9), match='010-12345'>
     >>> m.group(0)
     '010-12345'>>> m.group(1)
@@ -609,12 +609,12 @@ match()如果匹配成功，返回一个Match对象，否则返回None：
 - 贪婪匹配
 正则匹配默认是贪婪匹配
 
-    >>> re.match(r'^(\d+)(0*)$', '102300').groups()
+    >>>re.match(r'^(\d+)(0*)$', '102300').groups()
     ('102300', '')
 由于\d+采用贪婪匹配，结果0*只能匹配空字符串。
 d+采用非贪婪匹配，加个?即可：
 
-    >>> re.match(r'^(\d+?)(0*)$', '102300').groups()
+    >>>re.match(r'^(\d+?)(0*)$', '102300').groups()
     ('1023', '00')
 
 - 编译
@@ -623,11 +623,11 @@ d+采用非贪婪匹配，加个?即可：
 2. 用编译后的正则表达式去匹配字符串。
 出于效率的考虑，我们可以预编译该正则表达式，接下来重复使用时就不需要编译这个步骤了，直接匹配：
 
-    >>> import re
-    # 编译:
-    >>> re_telephone = re.compile(r'^(\d{3})-(\d{3,8})$')
-    # 使用：
-    >>> re_telephone.match('010-12345').groups()
+    >>>import re
+    #编译:
+    >>>re_telephone = re.compile(r'^(\d{3})-(\d{3,8})$')
+    #使用：
+    >>>re_telephone.match('010-12345').groups()
     ('010', '12345')
     >>> re_telephone.match('010-8086').groups()
     ('010', '8086')
@@ -648,34 +648,35 @@ d+采用非贪婪匹配，加个?即可：
 
 需要支持Python的MySQL驱动来连接到MySQL服务器
 
-    $ pip install mysql-connector-python --allow-external mysql-connector-python
+    $pip install mysql-connector-python --allow-external mysql-connector-python
 
 如果上面的命令安装失败，可以试试另一个驱动：
 
-    $ pip install mysql-connector
+    $pip install mysql-connector
 
 - 连接数据库：
 
-    # 导入MySQL驱动:
-    >>> import mysql.connector
-    # 注意把password设为你的root口令:
-    >>> conn = mysql.connector.connect(user='root', password='password', database='test')
-    >>> cursor = conn.cursor()
-    # 创建user表:
+    #导入MySQL驱动:
+    >>>import mysql.connector
+    #注意把password设为你的root口令:
+    >>>conn = mysql.connector.connect(user='root', password='password', database='test')
+    >>>cursor = conn.cursor()
+    #创建user表:
     >>> cursor.execute('create table user (id varchar(20) primary key, name varchar(20))')
-    # 插入一行记录，注意MySQL的占位符是%s:
+    #插入一行记录，注意MySQL的占位符是%s:
     >>> cursor.execute('insert into user (id, name) values (%s, %s)', ['1', 'Michael'])
     >>> cursor.rowcount
-    1# 提交事务:
+    1
+    #提交事务:
     >>> conn.commit()
     >>> cursor.close()
-    # 运行查询:
+    #运行查询:
     >>> cursor = conn.cursor()
     >>> cursor.execute('select * from user where id = %s', ('1',))
     >>> values = cursor.fetchall()
     >>> values
     [('1', 'Michael')]
-    # 关闭Cursor和Connection:
+    #关闭Cursor和Connection:
     >>> cursor.close()
     True>>> conn.close()
     
