@@ -657,7 +657,6 @@ match()如果匹配成功，返回一个Match对象，否则返回None：
 - 在Mac或Linux上，需要编辑MySQL的配置文件，把数据库默认的编码全部改为UTF-8。MySQL的配置文件默认存放在`/etc/my.cnf`或者`/etc/mysql/my.cnf`：
 
     [client]default-character-set = utf8
-
     [mysqld]default-storage-engine = INNODB
     character-set-server = utf8
     collation-server = utf8_general_ci
@@ -677,6 +676,7 @@ match()如果匹配成功，返回一个Match对象，否则返回None：
 
 #注意把password设为你的root口令:
 >conn = mysql.connector.connect(user='root', password='password', database='test')
+
 >cursor = conn.cursor()
 
 #创建user表:
@@ -684,16 +684,23 @@ match()如果匹配成功，返回一个Match对象，否则返回None：
 
 #插入一行记录，注意MySQL的占位符是%s:
 >cursor.execute('insert into user (id, name) values (%s, %s)', ['1', 'Michael'])
+
 >cursor.rowcount
+
 `1`
+
 #提交事务:
 >conn.commit()
+
 >cursor.close()
 
 #运行查询:
 >cursor = conn.cursor()
+
 >cursor.execute('select * from user where id = %s', ('1',))
+
 >values = cursor.fetchall()
+
 >values
 
 `[('1', 'Michael')]`
