@@ -536,22 +536,25 @@ with语句自动调用close()，同时刷新缓冲区
     
 重命名和删除
 
-    # 对文件重命名:
-    >>> os.rename('test.txt', 'test.py')
-    # 删掉文件:
-    >>> os.remove('test.py')
+# 对文件重命名:
+> os.rename('test.txt', 'test.py')
+
+# 删掉文件:
+> os.remove('test.py')
 
 `shutil`模块提供了`copyfile()`函数，可以在shutil模块中找到很多实用函数，是os模块的补充。
 
 - 列出所有目录：
 
-    >>> [x for x in os.listdir('.') if os.path.isdir(x)]
-    ['.lein', '.local', '.m2', '.npm', '.ssh', '.Trash', '.vim', 'Applications', 'Desktop', ...]
+> [x for x in os.listdir('.') if os.path.isdir(x)]
+
+`['.lein', '.local', '.m2', '.npm', '.ssh', '.Trash', '.vim', 'Applications', 'Desktop', ...]`
     
 - 列出所有.py文件：
 
-    >>> [x for x in os.listdir('.') if os.path.isfile(x) and os.path.splitext(x)[1]=='.py']
-    ['apis.py', 'config.py', 'models.py', 'pymonitor.py', 'test_db.py', 'urls.py', 'wsgiapp.py']
+> [x for x in os.listdir('.') if os.path.isfile(x) and os.path.splitext(x)[1]=='.py']
+
+`['apis.py', 'config.py', 'models.py', 'pymonitor.py', 'test_db.py', 'urls.py', 'wsgiapp.py']`
     
 
 ## 正则表达式
@@ -587,9 +590,9 @@ match()如果匹配成功，返回一个Match对象，否则返回None：
 
 #### 切分字符串：
 用正则表达式切分字符串比用固定的字符更灵活:
+>re.split(r'\s+', 'a b   c')
 
-    >>>re.split(r'\s+', 'a b   c')
-    ['a', 'b', 'c']
+`['a', 'b', 'c']`
 
 #### 分组
 提取子串，用`()`表示的就是要提取的分组（Group）；
@@ -666,34 +669,35 @@ match()如果匹配成功，返回一个Match对象，否则返回None：
     $pip install mysql-connector-python --allow-external mysql-connector-python
 
 如果上面的命令安装失败，可以试试另一个驱动：
-
-    $pip install mysql-connector
+>$pip install mysql-connector
 
 - 连接数据库：
 
     #导入MySQL驱动:
-    >>>import mysql.connector
+    import mysql.connector
     #注意把password设为你的root口令:
-    >>>conn = mysql.connector.connect(user='root', password='password', database='test')
-    >>>cursor = conn.cursor()
+    conn = mysql.connector.connect(user='root', password='password', database='test')
+    cursor = conn.cursor()
     #创建user表:
-    >>> cursor.execute('create table user (id varchar(20) primary key, name varchar(20))')
+    cursor.execute('create table user (id varchar(20) primary key, name varchar(20))')
     #插入一行记录，注意MySQL的占位符是%s:
-    >>> cursor.execute('insert into user (id, name) values (%s, %s)', ['1', 'Michael'])
-    >>> cursor.rowcount
-    1
+    cursor.execute('insert into user (id, name) values (%s, %s)', ['1', 'Michael'])
+    cursor.rowcount
+    `1`
     #提交事务:
-    >>> conn.commit()
-    >>> cursor.close()
+    conn.commit()
+    cursor.close()
     #运行查询:
-    >>> cursor = conn.cursor()
-    >>> cursor.execute('select * from user where id = %s', ('1',))
-    >>> values = cursor.fetchall()
-    >>> values
-    [('1', 'Michael')]
+    cursor = conn.cursor()
+    cursor.execute('select * from user where id = %s', ('1',))
+    values = cursor.fetchall()
+    >values
+    
+    `[('1', 'Michael')]`
     #关闭Cursor和Connection:
-    >>> cursor.close()
-    True>>> conn.close()
+    cursor.close()
+    `True`
+    conn.close()
     
 - 执行INSERT等操作后要调用`commit()`提交事务；
 - MySQL的SQL占位符是`%s`。
