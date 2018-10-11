@@ -15,7 +15,8 @@ C++中全局变量和静态变量的存储放在一块，都在全局区（又�
 - 定义一个函数为`纯虚函数`，才代表函数没有被实现。
 
 纯虚函数是在基类中声明的虚函数，它在基类中没有定义，但要求任何派生类都要定义自己的实现方法。在基类中实现纯虚函数的方法是在函数原型后加`=0`。同时含有纯虚拟函数的类称为`抽象类`，它不能生成对象。
->virtual void funtion1()=0
+
+    virtual void funtion1()=0
 
 如果派生类中没有重新定义纯虚函数，而只是继承基类的纯虚函数，则这个派生类仍然还是一个抽象类。如果派生类中给出了基类纯虚函数的实现，则该派生类就不再是抽象类了，它是一个可以建立对象的具体的类。
 
@@ -65,13 +66,6 @@ C++中全局变量和静态变量的存储放在一块，都在全局区（又�
 所谓静态检测，就是不运行程序，在程序的编译阶段进行检测，主要原理就是对new与 delete，malloc与free进行匹配检测。常用的静态检测的工具有splint，PC-LINT，BEAM等。但是静态检测不能判定跨线程的内存申请与释放。
 - 动态检测<br>
 所谓动态检测，就是运行程序的过程中，对程序的内存分配情况进行记录并判定。常用的工具有valgrind，Rational purify等。对于动态检测来说，最大的弊端就是会加重程序的负担，对于一些大型工程，涉及到多个动态库，带来的负担太重，这时候就需要自己根据需求写一套了。
-        
-
-
-
- 
-
-
 
 ## 6. 智能指针
 用来解决申请内存忘记释放，或者抛出异常导致不能正常释放内存之内的内存泄漏情况。
@@ -79,7 +73,8 @@ C++中全局变量和静态变量的存储放在一块，都在全局区（又�
 智能指针和普通指针的区别在于智能指针实际上是对普通指针加了一层封装机制，这样的一层封装机制的目的是为了使得智能指针可以方便的管理一个对象的生命期。一个对象什么时候和在什么条件下要被析构或者是删除是受智能指针本身决定的，用户并不需要管理。
 
 智能指针是在 `<memory>` 标头文件中的 `std` 命名空间中定义的。
->std::unique_ptr<LargeObject> pLarge(new LargeObject());
+
+    std::unique_ptr<LargeObject> pLarge(new LargeObject());
 
 智能指针具有通过使用“点”表示法访问的成员函数。 例如，一些 STL 智能指针具有释放指针所有权的reset成员函数。智能指针通常提供直接访问其原始指针的方法。 STL 智能指针拥有一个用于此目的的`get`成员函数:
 
@@ -117,13 +112,143 @@ C++中全局变量和静态变量的存储放在一块，都在全局区（又�
  
 
 ## 7. 设计模式
-1. 单例模式：
-    - 关键代码：构造函数是私有的。
-    - 应用实例： 1、一个党只能有一个书记。 2、Windows 是多进程多线程的，在操作一个文件的时候，就不可避免地出现多个进程或线程同时操作一个文件的现象，所以所有文件的处理必须通过唯一的实例来进行。 3、一些设备管理器常常设计为单例模式，比如一个电脑有两台打印机，在输出的时候就要处理不能两台打印机打印同一个文件。
-    - 优点： 1、在内存里只有一个实例，减少了内存的开销，尤其是频繁的创建和销毁实例（比如管理学院首页页面缓存）。 2、避免对资源的多重占用（比如写文件操作）。
+#### 单例（Singleton）
+- 关键代码：构造函数是私有的。
+- 应用实例： 1、一个党只能有一个书记。 2、Windows 是多进程多线程的，在操作一个文件的时候，就不可避免地出现多个进程或线程同时操作一个文件的现象，所以所有文件的处理必须通过唯一的实例来进行。 3、一些设备管理器常常设计为单例模式，比如一个电脑有两台打印机，在输出的时候就要处理不能两台打印机打印同一个文件。
+- 优点： 1、在内存里只有一个实例，减少了内存的开销，尤其是频繁的创建和销毁实例（比如管理学院首页页面缓存）。 2、避免对资源的多重占用（比如写文件操作）。
 
+#### 简单工厂（Simple Factory）
+**目的**：在创建一个对象时不向客户暴露内部细节，并提供一个创建对象的通用接口。
 
+**实现细节**：简单工厂把实例化的操作单独放到一个类中，这个类就成为简单工厂类，让简单工厂类来决定应该用哪个具体子类来实例化。
 
+这样做能把客户类和具体子类的实现解耦，客户类不再需要知道有哪些子类以及应当实例化哪个子类。如果不使用简单工厂，那么所有的客户类都要知道所有子类的细节。而且一旦子类发生改变，例如增加子类，那么所有的客户类都要进行修改。
+
+    public interface Product {}
+    public class ConcreteProduct0 implements Product {}
+    public class ConcreteProduct1 implements Product {}
+    public class ConcreteProduct2 implements Product {}
+以下的 Client 类包含了实例化的代码，这是一种**错误的实现**。如果在客户类中存在这种实例化代码，就需要考虑将代码放到简单工厂中。
+
+    public class Client {
+        public static void main(String[] args) {
+            int type = 1;
+            Product product;
+            if (type == 1) {
+                product = new ConcreteProduct1();
+            } else if (type == 2) {
+                product = new ConcreteProduct2();
+            } else {
+                product = new ConcreteProduct0();
+            }
+            // do something with the product
+        }
+    }
+
+以下的 SimpleFactory 是简单工厂实现，它被所有需要进行实例化的客户类调用。
+
+    public class SimpleFactory {
+        public Product createProduct(int type) {
+            if (type == 1) {
+                return new ConcreteProduct1();
+            } else if (type == 2) {
+                return new ConcreteProduct2();
+            }
+            return new ConcreteProduct0();
+        }
+    }
+
+    public class Client {
+        public static void main(String[] args) {
+            SimpleFactory simpleFactory = new SimpleFactory();
+            Product product = simpleFactory.createProduct(1);
+            // do something with the product
+        }
+    }
+
+#### 工厂方法（Factory Method）
+##### 目的
+定义了一个创建对象的接口，但由子类决定要实例化哪个类。工厂方法把**实例化**操作**推迟到子类**。
+##### 实现细节
+在`简单工厂`中，创建对象的是另一个类，而在`工厂方法`中，是由子类来创建对象。
+
+下面示例中，`Factory` 有一个 `doSomething()` 方法，这个方法需要用到一个产品对象，这个产品对象由 `factoryMethod()` 方法创建。该方法是抽象的，需要由子类去实现。
+
+    //工厂方法类
+    public abstract class Factory {  
+        abstract public Product factoryMethod();
+        public void doSomething() {
+            Product product = factoryMethod();
+            // do something with the product（产品接口或抽象类）
+        }
+    }
+    //实现的工厂类0
+    public class ConcreteFactory0 extends Factory {    
+        public Product factoryMethod() {
+            return new ConcreteProduct0();
+        }
+    }
+    //实现的工厂类1
+    public class ConcreteFactory1 extends Factory {    
+        public Product factoryMethod() {
+            return new ConcreteProduct1();
+        }
+    }
+    //实现的工厂类2
+    public class ConcreteFactory2 extends Factory {     
+        public Product factoryMethod() {
+            return new ConcreteProduct2();
+        }
+    }
+
+#### 抽象工厂（Abstract Factory）
+##### 目的
+提供一个接口，用于创建相关的**对象家族**。
+##### 实现细节
+`抽象工厂`模式创建的是对象家族，也就是很多对象而不是一个对象，并且这些对象是相关的。而`工厂方法`模式只是用于创建一个对象，这和抽象工厂模式有很大不同。
+
+抽象工厂模式用到了工厂方法模式来创建单一对象，`AbstractFactory` 中的 `createProductA()` 和 `createProductB()` 方法都是让子类来实现，这两个方法单独来看就是在创建一个对象，这符合工厂方法模式的定义。
+
+至于**创建对象的家族**这一概念是在 Client 体现，Client 要通过 AbstractFactory 同时调用两个方法来创建出两个对象，在这里这两个对象就有很大的相关性，Client 需要同时创建出这两个对象。
+
+    public class AbstractProductA {}
+    public class AbstractProductB {}
+    public class ProductA1 extends AbstractProductA {}
+    public class ProductA2 extends AbstractProductA {}
+    public class ProductB1 extends AbstractProductB {}
+    public class ProductB2 extends AbstractProductB {}
+    //抽象工厂类
+    public abstract class AbstractFactory {    
+        abstract AbstractProductA createProductA();
+        abstract AbstractProductB createProductB();
+    }
+    //实现的工厂类1，实现类似于工厂方法，不过创建了对象家族
+    public class ConcreteFactory1 extends AbstractFactory {
+        AbstractProductA createProductA() {
+            return new ProductA1();
+        }
+        AbstractProductB createProductB() {
+            return new ProductB1();
+        }
+    }
+    //实现的工厂类2，实现类似于工厂方法，不过创建了对象家族
+    public class ConcreteFactory2 extends AbstractFactory {
+        AbstractProductA createProductA() {
+            return new ProductA2();
+        }
+        AbstractProductB createProductB() {
+            return new ProductB2();
+        }
+    }
+
+    public class Client {
+        public static void main(String[] args) {
+            AbstractFactory abstractFactory = new ConcreteFactory1();
+            AbstractProductA productA = abstractFactory.createProductA();
+            AbstractProductB productB = abstractFactory.createProductB();
+            // do something with productA and productB
+        }
+    }
 
 
 ## 8. 构造函数，析构函数和赋值函数
@@ -404,7 +529,11 @@ session用来跟踪会话。
 - 每个红色节点必须有两个黑色的子节点。（从每个叶子到根的所有路径上不能有两个连续的红色节点。）
 - 从任一节点到其每个叶子的所有简单路径都包含相同数目的黑色节点。
 
-## 18. 
+## 18. 函数修饰关键字
+函数关键字 | 解释
+----|----
+static | 表明该函数是属于类的，不属于对象；不能在该函数中访问或者处理类中的其他非static成员变量。
+explicit | 禁止编译器进行隐式转换，避免不必要的bug；例如类`group`有构造函数`group(int num)`，同时有个函数以`group`类为参数`play(group biggroup)`，则在调用函数`play(3)`时，编译器会把数字3根据`group`的构造函数隐式转换成一个`group`对象。我们不想进行这样的转换，因此在`group`的构造函数前面加入该关键字`explicit`。
 
 
 
@@ -413,7 +542,7 @@ session用来跟踪会话。
 
 
 
-# Liam means helmet of will.
+## Finally: Other Things
+#### Liam means helmet of will.
 
 https://www.babycenter.com/baby-names-liam-2820.htm
-

@@ -498,7 +498,7 @@ next    | 从断点处开始单步执行，不会进入被调用的函数中
 回车   |  如果不敲入命令，直接点回车，gdb默认执行上一条命令
 quit    | 退出gdb
 p *pstData  |  查看变量的值，以及指针内容等
-display variable | 单步执行时自动显示变量variable的值
+display variable | 单步执行时**自动显示**变量variable的值
 info sources  | 列出所有用于编译的源文件
 
 
