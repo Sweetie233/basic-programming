@@ -4,19 +4,21 @@
 打开终端并输入 vim xxx.txt → 按Esc，然后输入:wq即可
 
 ## 3. 查看Ubuntu的内核版本号
->uname -a  #注意i686
+    uname -a  #注意i686
 
 查看Ubuntu的版本号
 
->cat /etc/issue
+    cat /etc/issue
 
 ## 4. Ubuntu C++环境搭建
 编译C程序使用gcc编译器，编译C++使用g++编译器
->sudo apt-get install g++
+
+    sudo apt-get install g++
 
 ## 5. 使用g++编译C++文件
->g++ filename   #自动开始编译连接的过程，默认输出a.out<br>
->g++ filename -o output_filename    # 指定编译之后的文件名
+    g++ filename   #自动开始编译连接的过程，默认输出a.out<br>
+     g++ -std=c++11 filename   #自动开始编译连接的过程，支持c++11标准<br>
+    g++ filename -o output_filename    # 指定编译之后的文件名
 
 ## 6. Ubuntu下使用VS Code
 编辑launch.json，配置调试环境；编辑tasks.json，配置编译环境。tasks.json推荐配置为：
@@ -37,13 +39,14 @@
 参考网页：https://www.cnblogs.com/EasonJim/p/7863099.html
 
 ## 8. Ubuntu修改系统环境变量
->sudo gedit ~/.profile  # 用户目录下的环境变量
+    sudo gedit ~/.profile  # 用户目录下的环境变量
 
 修改：`export PATH="$PATH:your path1:your path2..."`
->sudo gedit /etc/profile  #系统目录下的环境变量
+
+    sudo gedit /etc/profile  #系统目录下的环境变量
 
 ## 9. Ubuntu锁屏快捷键
->Ctrl+Alt+L
+`Ctrl+Alt+L`
 
 ## 10. With工具的使用
 正常的`/with`目录包含：`bb/root`, `bb/conf`, `bb/common`, `bb/scripts`, `common`等目录。编译开发一般只使用`/with/bb/root`目录，通过使用`with -a bb/root=<开发包地址>`即可以快速设置编译使用的开发包。
@@ -57,37 +60,41 @@ hconsole：http://202.101.23.226:81/xwiki/bin/view/Main/FAQ/hconsole/
 - `whereis 文件名`，用于程序名的搜索，搜索结果只限于二进制文件（参数`-b`）、man说明文件（参数`-m`）和源代码文件（参数`-s`），**如果省略参数，则返回所有信息**。
 
 ## 12. 根据网络端口查看进程号
->sudo netstat -lnp|grep 80
+    sudo netstat -lnp|grep 80
 
 这个时候，如果有进程在占用端口80，命令行便会显示该进程的详细信息。
 
 假如占用80端口的进程pid是 846：
->sudo kill -9 846
+
+    sudo kill -9 846
 
 ## 13. 根据程序名找到进程号
->ps aux|grep 程序名 | grep -v grep
+    ps aux|grep 程序名 | grep -v grep
 
 USER PID 注意第二个是pid；-v是避免匹配到grep进程
 
 ## 14. 使用sudo停止与启动服务
->sudo service cron stop <br>
->sudo service cron start
+    sudo service cron stop <br>
+    sudo service cron start
 
 把定时任务写在root用户的cron里
->sudo crontab -u root -e
+    sudo crontab -u root -e
 
 若在crontab中写了如下的一个任务：
->0 6 * * * echo "Good morning"
+
+    0 6 * * * echo "Good morning"
 
 注意单纯echo，从屏幕上看不到任何输出，因为cron把任何输出都email到root的信箱了
 
 ## 15. crontab的使用
 crontab启动：
->crontab -e 编辑模式启动crontab，按"i"键开启编辑模式
+
+    crontab -e 编辑模式启动crontab，按"i"键开启编辑模式
 
 注意crontab执行定时任务时，不会加载任何环境变量。因此我们自己在Terminal里测试运行好的脚本可能在crontab里不能正常运行，所以我们需要先在自己写的shell脚本头部加上如下两句话使环境变量生效：
->source /home/xluo/.profile<br>
->source /etc/profile
+
+    source /home/xluo/.profile<br>
+    source /etc/profile
 
 为何crontab执行与脚本直接执行结果不同？(https://www.soosmart.com/topic/533.html)
 
@@ -135,7 +142,7 @@ ctrl-d | Terminate input, or exit shell
 调用函数`main()`并且当`main`结束时, it will exit giving the system the return code that is the result of `main`。如果main中没有明确指定返回值，则默认返回`None`，这与`return 0`语句产生的系统返回代码相同。
 
 #### 生成详细的PDF报告文档：
->python testplanMyTest.py --pdf-style detailed --pdf report.pdf
+    python testplanMyTest.py --pdf-style detailed --pdf report.pdf
 
 - A `MultiTest` instance can be constructed from the following parameters:
     - **Name**: The name is internal to Testplan, and is used as a handle on the test
@@ -437,7 +444,7 @@ l (→)  |	光标向右移动一个字符
 `dd`      | 删除游标所在的那一整行（常用）
 `ndd`     |	n 为数字。删除光标所在的向下 n 行，例如 20dd 则是删除 20 行（常用）
 
-09 11 * * * export LC_ALL=en_US.UTF-8 && with -b /local/sc/builds/v20180914-sc -a bb/scripts=/local/sc/dist/scripts/ -a bb/conf=/local/sc/dist/conf/ /with/bb/scripts/auto_test/crontab-UAT.sh > /with/bb/scripts/auto_test/crontablog/`date +\%Y\%m\%d`.log 
+    09 11 * * * export LC_ALL=en_US.UTF-8 && with -b /local/sc/builds/v20180914-sc -a bb/scripts=/local/sc/dist/scripts/ -a bb/conf=/local/sc/dist/conf/ /with/bb/scripts/auto_test/crontab-UAT.sh > /with/bb/scripts/auto_test/crontablog/`date +\%Y\%m\%d`.log 
 
 ## 36. 配置环境
 
@@ -465,7 +472,7 @@ python脚本运行路径：`/home/xluo/ftdrundir`
 
 指令 | 解释
 -----|------
-* | 表示当前目录所有文件，也可以是某个文件名
+`*` | 表示当前目录所有文件，也可以是某个文件名
 -r | 是递归查找
 -n | 是显示行号
 -R | 查找所有文件包含子目录
@@ -492,19 +499,24 @@ break function | 在函数入口处设置断点（只写`类名：：函数名`�
 break linenum   | 在现在的源文件的第linenum行处设置断点，现在的源文件是只source text被打印的最后一个文件
 break filename:linenum | 在源文件filename的第linenum行处设置断点
 break filename:function | 在源文件filename的函数function入口处设置断点
-condition 1 item_to_remove==1 | 对断点1设置条件，当条件满足时暂停执行
+condition 1 item_to_remove==1 | 对断点1设置条件，当条件满足时暂停执行(不好用)
+`break a.cc:666 if testsize==100` | 设置一个条件断点
 step    |    从断点处开始单步执行，会进入被调用的函数中 （注意设置断点后还需要重新run一次）
 next    | 从断点处开始单步执行，不会进入被调用的函数中
+c       | 继续运行，直到再次到达断点时停下
 回车   |  如果不敲入命令，直接点回车，gdb默认执行上一条命令
 quit    | 退出gdb
 p *pstData  |  查看变量的值，以及指针内容等
 display variable | 单步执行时**自动显示**变量variable的值
 info sources  | 列出所有用于编译的源文件
 
+## 40. C++中读取json文件
+https://github.com/open-source-parsers/jsoncpp
 
+## 41. 文档比较软件GUI
+https://askubuntu.com/questions/2946/what-are-some-good-gui-diff-and-merge-applications-available-for-ubuntu
 
-
-
+    sudo apt-get install meld
 
 
 
