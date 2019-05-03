@@ -2,61 +2,58 @@
 using namespace std;
 
 template<class Type>
-int Partition_1(Type Data[], int left, int right)    //µÚÒ»ÖÖ·Ö¸î²ßÂÔ£¬½«µÚÒ»¸öÔªËØ×÷ÎªÉÚ±ø£¬ÒÔÓÒ×óË³ĞòÒÀ´Î½»»»Êı¾İ
-{    //·µ»Ø»®·ÖºóÖáÔªËØ¶ÔÓ¦µÄÎ»ÖÃ
-	Type pivot = Data[left];  //Ñ¡Ôñ×î×ó±ßµÄÎªÖáÔªËØ
+int Partition_1(Type Data[], int left, int right)    //ç¬¬ä¸€ç§åˆ†å‰²ç­–ç•¥ï¼Œå°†ç¬¬ä¸€ä¸ªå…ƒç´ ä½œä¸ºå“¨å…µï¼Œä»¥å³å·¦é¡ºåºä¾æ¬¡äº¤æ¢æ•°æ®
+{    //è¿”å›åˆ’åˆ†åè½´å…ƒç´ å¯¹åº”çš„ä½ç½®
+	Type pivot = Data[left];  //é€‰æ‹©æœ€å·¦è¾¹çš„ä¸ºè½´å…ƒç´ 
 	while (left < right)
 	{
 		while (left < right && Data[right] > pivot)
-			right--;    //¿ØÖÆÓÒÖ¸ÕëÒÆ¶¯
-		Data[left] = Data[right];    //ÕÒµ½Ğ¡ÊıÍù×óÒÆ¶¯
+			right--;    //æ§åˆ¶å³æŒ‡é’ˆç§»åŠ¨
+		Data[left] = Data[right];    //æ‰¾åˆ°å°æ•°å¾€å·¦ç§»åŠ¨
 
 		while (left < right && Data[left] <= pivot)
-			left++;    //¿ØÖÆ×óÖ¸ÕëÒÆ¶¯
-		Data[right] = Data[left];		//ÕÒµ½´óÊıÍùÓÒÒÆ¶¯
+			left++;    //æ§åˆ¶å·¦æŒ‡é’ˆç§»åŠ¨
+		Data[right] = Data[left];		//æ‰¾åˆ°å¤§æ•°å¾€å³ç§»åŠ¨
 	}
-	Data[left] = pivot;		//´ËÊ±leftÖ¸ÏòµÄÎ»ÖÃÎª¿Õ£¬½«ÖáÔªËØ·ÅÖÃÓÚ´Ë
-	return left;		//·µ»ØÖáÔªËØµÄĞÂÎ»ÖÃ£¬ÊµÏÖ·ÖÖÎ
+	Data[left] = pivot;		//æ­¤æ—¶leftæŒ‡å‘çš„ä½ç½®ä¸ºç©ºï¼Œå°†è½´å…ƒç´ æ”¾ç½®äºæ­¤
+	return left;		//è¿”å›è½´å…ƒç´ çš„æ–°ä½ç½®ï¼Œå®ç°åˆ†æ²»
 }
 
 template<class Type>
-int Partition_2(Type Data[], int start, int end)		//µÚ¶şÖÖ·Ö¸î²ßÂÔ£¬µÚÒ»¸öÔªËØ×÷ÎªÉÚ±ø´ı¶¨£¬×óÓÒÖ¸ÕëÒÀ´ÎÏòÇ°ËÑË÷
-//Óöµ½×ó´ó²¢ÇÒÓÒĞ¡µÄÇé¿ö£¬½»»»Êı¾İÎ»ÖÃ
+int Partition_2(Type Data[], int start, int end)		//ç¬¬äºŒç§åˆ†å‰²ç­–ç•¥ï¼Œç¬¬ä¸€ä¸ªå…ƒç´ ä½œä¸ºå“¨å…µå¾…å®šï¼Œå·¦å³æŒ‡é’ˆä¾æ¬¡å‘å‰æœç´¢
+//é‡åˆ°å·¦å¤§å¹¶ä¸”å³å°çš„æƒ…å†µï¼Œäº¤æ¢æ•°æ®ä½ç½®
 {
-	Type pivot = Data[start];		//Ñ¡È¡µÚÒ»¸öÎªÉÚ±ø
-	int left = start, right = end;				//³õÊ¼»¯left,right
-	while (left <=right)		//Íâ²ã¿ØÖÆ±éÀúÑ­»·
+	Type pivot = Data[start];		//é€‰å–ç¬¬ä¸€ä¸ªä¸ºå“¨å…µ
+	int left = start, right = end;				//åˆå§‹åŒ–left,right
+	while (left <=right)		//å¤–å±‚æ§åˆ¶éå†å¾ªç¯
 	{
-		while (left <= right && Data[left] <= pivot)	//¿ØÖÆ×óÖ¸ÕëÒÆ¶¯
+		while (left <= right && Data[left] <= pivot)	//æ§åˆ¶å·¦æŒ‡é’ˆç§»åŠ¨
 			left++;
-		while (left <= right && Data[right] > pivot) //¿ØÖÆÓÒÖ¸ÕëÒÆ¶¯
+		while (left <= right && Data[right] > pivot) //æ§åˆ¶å³æŒ‡é’ˆç§»åŠ¨
 			right--;
 		if (left < right)
-		{	//½»»»º¯ÊıÎªÄÚÁªº¯Êı£¬¿ÉÒÔÖ±½Óµ÷ÓÃ
+		{	//äº¤æ¢å‡½æ•°ä¸ºå†…è”å‡½æ•°ï¼Œå¯ä»¥ç›´æ¥è°ƒç”¨
 			swap(Data[right], Data[left]);		
 			right++;
 			left--;
 		}
 	}
-	//´ËÊ±leftÖ¸ÕëÎ»ÓÚrightÖ¸ÕëµÄÓÒÃæ£¬Ö¸Ïò´óÓÚÖáÔªËØµÄÊı¾İ£¬rightÓë´ËÏà·´
-	swap(Data[start], Data[right]);	//½»»»ÖáÔªËØÓërightÖ¸ÕëËùÖ¸µÄÔªËØ
-	return right;		//·µ»ØÖáÔªËØĞÂÎ»ÖÃ£¬ÊµÏÖ·ÖÖÎ
+	//æ­¤æ—¶leftæŒ‡é’ˆä½äºrightæŒ‡é’ˆçš„å³é¢ï¼ŒæŒ‡å‘å¤§äºè½´å…ƒç´ çš„æ•°æ®ï¼Œrightä¸æ­¤ç›¸å
+	swap(Data[start], Data[right]);	//äº¤æ¢è½´å…ƒç´ ä¸rightæŒ‡é’ˆæ‰€æŒ‡çš„å…ƒç´ 
+	return right;		//è¿”å›è½´å…ƒç´ æ–°ä½ç½®ï¼Œå®ç°åˆ†æ²»
 }
 
 
-//´Ëº¯ÊıÄ£°å¿ÉÒÔÖ±½Óµ÷ÓÃ
-//
-//		By Xinjian Luo
-//		2014/4/17
-//	    http://blog.sina.com.cn/u/3640099785
+//æ­¤å‡½æ•°æ¨¡æ¿å¯ä»¥ç›´æ¥è°ƒç”¨
+//2014/4/17
 template <class Type>
-void QuickSort(Type Data[], int left, int right)		//´Ë´¦leftºÍrightÎªÊı×éÏÂ±ê£¨×¢Òâ¼õÒ»£©
-{	//ÓÃ·ÖÖÎ·¨ÊµÏÖ
-	if (left < right)  //¿ØÖÆ½áÊøÌõ¼ş
+void QuickSort(Type Data[], int left, int right)		//æ­¤å¤„leftå’Œrightä¸ºæ•°ç»„ä¸‹æ ‡ï¼ˆæ³¨æ„å‡ä¸€ï¼‰
+{	//ç”¨åˆ†æ²»æ³•å®ç°
+	if (left < right)  //æ§åˆ¶ç»“æŸæ¡ä»¶
 	{
-		int p = Partition_1(Data, left, right);		//µÚÒ»ÖÖ·Ö¸î²ßÂÔ
-//		int p = Partition_2(Data, left, right);			//µÚ¶şÖÖ·Ö¸î²ßÂÔ
-		QuickSort(Data, left, p - 1);		//×ó°ëÃæÅÅĞò
-		QuickSort(Data, p + 1, right);		//ÓÒ°ëÃæÅÅĞò
+		int p = Partition_1(Data, left, right);		//ç¬¬ä¸€ç§åˆ†å‰²ç­–ç•¥
+//		int p = Partition_2(Data, left, right);			//ç¬¬äºŒç§åˆ†å‰²ç­–ç•¥
+		QuickSort(Data, left, p - 1);		//å·¦åŠé¢æ’åº
+		QuickSort(Data, p + 1, right);		//å³åŠé¢æ’åº
 	}
 }
